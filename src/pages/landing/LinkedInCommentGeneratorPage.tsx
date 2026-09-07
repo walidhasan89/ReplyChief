@@ -62,7 +62,7 @@ const FAQS: FaqItem[] = [
   },
   {
     question: 'Can it comment in languages other than English?',
-    answer: 'Yes. ReplyChief detects the post\'s language and generates the comment in that language, including Hindi, Bangla, and Spanish.',
+    answer: "Yes. ReplyChief detects the post's language and generates the comment in that language, across 30+ languages.",
   },
   {
     question: 'Will people be able to tell it\'s AI-generated?',
@@ -341,8 +341,8 @@ export default function LinkedInCommentGeneratorPage({ isDark }: Props) {
             Works in your language, not just English
           </h2>
           <p className={`text-base leading-relaxed ${mutedText}`}>
-            If the post is in Hindi, Bangla, Spanish, or several other languages, ReplyChief writes the comment in that
-            language too — not a stiff English-to-X translation. If you comment across a multilingual network, this matters
+            ReplyChief detects the language of the post and writes the comment in that language too — not a stiff,
+            translated-sounding version of an English draft. If you comment across a multilingual network, this matters
             more than any other feature on this page.
           </p>
         </div>

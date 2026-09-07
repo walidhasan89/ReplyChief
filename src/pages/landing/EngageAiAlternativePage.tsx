@@ -122,7 +122,7 @@ export default function EngageAiAlternativePage({ isDark }: Props) {
           <div>
             <h2 className={`text-xl font-bold tracking-tight mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>Language support</h2>
             <p className={`text-base leading-relaxed ${mutedText}`}>
-              ReplyChief generates comments in the language of the original post, including Hindi, Bangla, and Spanish.
+              ReplyChief generates comments in the language of the original post, across 30+ languages.
               This is a meaningful difference if you comment across a multilingual network.
             </p>
           </div>

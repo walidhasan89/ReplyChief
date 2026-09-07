@@ -1,13 +1,30 @@
 import { useEffect, useState } from 'react';
+import ChromeIcon from '../components/ChromeIcon';
 
 const CHROME_STORE_URL =
   'https://chromewebstore.google.com/detail/replychief-linkedin-ai-co/fmigngdcmjgeojnnocphdnkdlkfeiiig';
 
 interface Props { isDark: boolean }
 
+const CONFETTI_COLORS = ['#3b82f6', '#60a5fa', '#93c5fd', '#1d4ed8', '#a5f3fc', '#fbbf24', '#34d399'];
+
+function createConfetti(): Particle[] {
+  return Array.from({ length: 80 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: -10 - Math.random() * 20,
+    size: 6 + Math.random() * 8,
+    color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+    rotation: Math.random() * 360,
+    speed: 1.5 + Math.random() * 2,
+    drift: (Math.random() - 0.5) * 2,
+    shape: Math.random() > 0.5 ? 'circle' : 'rect',
+  }));
+}
+
 export default function SuccessPage({ isDark }: Props) {
   const [step, setStep] = useState(0);
-  const [confetti, setConfetti] = useState<Particle[]>([]);
+  const [confetti] = useState<Particle[]>(createConfetti);
 
   // Stagger the step cards in
   useEffect(() => {
@@ -15,23 +32,6 @@ export default function SuccessPage({ isDark }: Props) {
       setTimeout(() => setStep(i + 1), delay + 600)
     );
     return () => timers.forEach(clearTimeout);
-  }, []);
-
-  // Confetti particles
-  useEffect(() => {
-    const colors = ['#3b82f6', '#60a5fa', '#93c5fd', '#1d4ed8', '#a5f3fc', '#fbbf24', '#34d399'];
-    const particles: Particle[] = Array.from({ length: 80 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: -10 - Math.random() * 20,
-      size: 6 + Math.random() * 8,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotation: Math.random() * 360,
-      speed: 1.5 + Math.random() * 2,
-      drift: (Math.random() - 0.5) * 2,
-      shape: Math.random() > 0.5 ? 'circle' : 'rect',
-    }));
-    setConfetti(particles);
   }, []);
 
   const bg = isDark
@@ -246,13 +246,5 @@ function ConfettiLayer({ particles }: { particles: Particle[] }) {
         />
       ))}
     </div>
-  );
-}
-
-function ChromeIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z" />
-    </svg>
   );
 }

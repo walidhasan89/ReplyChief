@@ -65,20 +65,35 @@ function runScrollReveal() {
   return observer;
 }
 
+// ─── Theme persistence ──────────────────────────────────────────────────────
+const THEME_STORAGE_KEY = 'replychief-theme';
+
+function getStoredTheme(): boolean | null {
+  if (typeof window === 'undefined') return null;
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+  if (stored === 'dark') return true;
+  if (stored === 'light') return false;
+  return null;
+}
+
 // ─── Main App ───────────────────────────────────────────────────────────────
 export default function App() {
-  const [isDark, setIsDark] = useState(() =>
-    typeof window !== 'undefined'
+  const [isDark, setIsDark] = useState(() => {
+    const stored = getStoredTheme();
+    if (stored !== null) return stored;
+    return typeof window !== 'undefined'
       ? window.matchMedia('(prefers-color-scheme: dark)').matches
-      : false
-  );
+      : false;
+  });
 
   const path = useRoute();
 
-  // Sync system preference
+  // Follow system preference changes, but only until the user makes an explicit choice
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    const handler = (e: MediaQueryListEvent) => {
+      if (getStoredTheme() === null) setIsDark(e.matches);
+    };
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
@@ -113,7 +128,13 @@ export default function App() {
     };
   }, [path]);
 
-  const toggleTheme = useCallback(() => setIsDark((prev) => !prev), []);
+  const toggleTheme = useCallback(() => {
+    setIsDark((prev) => {
+      const next = !prev;
+      window.localStorage.setItem(THEME_STORAGE_KEY, next ? 'dark' : 'light');
+      return next;
+    });
+  }, []);
 
   // ── Route matching ──────────────────────────────────────────────────────
   const isSuccess    = path === '/success';

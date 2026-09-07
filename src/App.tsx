@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type ComponentType } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProblemSolution from './components/ProblemSolution';
@@ -17,6 +17,38 @@ import Disclaimer from './pages/Disclaimer';
 import SuccessPage from './pages/SuccessPage';
 import AuthorPage from './pages/AuthorPage';
 import SupportPage from './pages/SupportPage';
+import LinkedInCommentGeneratorPage from './pages/landing/LinkedInCommentGeneratorPage';
+import LinkedInCommentExamplesPage from './pages/landing/LinkedInCommentExamplesPage';
+import CongratulationsCommentsPage from './pages/landing/CongratulationsCommentsPage';
+import ReplyToCommentsPage from './pages/landing/ReplyToCommentsPage';
+import EngageAiAlternativePage from './pages/landing/EngageAiAlternativePage';
+import BestCommentGeneratorsPage from './pages/landing/BestCommentGeneratorsPage';
+import CommentingStrategyPage from './pages/landing/CommentingStrategyPage';
+import CommentTonesPage from './pages/landing/CommentTonesPage';
+import CommentsForSalesPage from './pages/landing/CommentsForSalesPage';
+
+interface LandingPageProps {
+  isDark: boolean;
+}
+
+// ─── SEO landing pages ───────────────────────────────────────────────────────
+// Table-driven so adding a page is one line here (+ the footer link) rather than
+// another branch in the route-matching logic below.
+const LANDING_PAGES: { path: string; Component: ComponentType<LandingPageProps> }[] = [
+  { path: '/linkedin-comment-generator/', Component: LinkedInCommentGeneratorPage },
+  { path: '/linkedin-comment-examples/', Component: LinkedInCommentExamplesPage },
+  { path: '/linkedin-congratulations-comments/', Component: CongratulationsCommentsPage },
+  { path: '/reply-to-linkedin-comments/', Component: ReplyToCommentsPage },
+  { path: '/alternatives/engage-ai/', Component: EngageAiAlternativePage },
+  { path: '/best-linkedin-comment-generators/', Component: BestCommentGeneratorsPage },
+  { path: '/linkedin-commenting-strategy/', Component: CommentingStrategyPage },
+  { path: '/linkedin-comment-tones/', Component: CommentTonesPage },
+  { path: '/linkedin-comments-for-sales/', Component: CommentsForSalesPage },
+];
+
+function normalizePath(path: string) {
+  return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
+}
 
 // ─── Router ────────────────────────────────────────────────────────────────
 function useRoute() {
@@ -142,6 +174,7 @@ export default function App() {
   const isSupport    = path === '/support';
   const isLegalPaths = ['/privacy', '/terms', '/disclaimer'];
   const isLegal      = isLegalPaths.includes(path);
+  const landingPage  = LANDING_PAGES.find((p) => normalizePath(p.path) === normalizePath(path));
   // isSpecial used to guard shared nav/footer — individual checks below
 
   // ── Success page (no shared navbar/footer) ────────────────────────────
@@ -181,6 +214,18 @@ export default function App() {
         {path === '/privacy'    && <PrivacyPolicy isDark={isDark} />}
         {path === '/terms'      && <TermsOfUse isDark={isDark} />}
         {path === '/disclaimer' && <Disclaimer isDark={isDark} />}
+        <Footer isDark={isDark} />
+      </div>
+    );
+  }
+
+  // ── SEO landing pages ──────────────────────────────────────────────────
+  if (landingPage) {
+    const { Component } = landingPage;
+    return (
+      <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-slate-950 text-white' : 'bg-white text-slate-900'}`}>
+        <Navbar isDark={isDark} toggleTheme={toggleTheme} />
+        <Component isDark={isDark} />
         <Footer isDark={isDark} />
       </div>
     );

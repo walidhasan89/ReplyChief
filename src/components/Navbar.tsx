@@ -17,10 +17,10 @@ const navItems = [
   { label: 'Support',      href: '/support',      isSection: false, isPage: true },
 ];
 
-const LEGAL_PATHS = ['/privacy', '/terms', '/disclaimer', '/walidhasan', '/success', '/support'];
-
 function isSpecialPage() {
-  return LEGAL_PATHS.includes(window.location.pathname);
+  // Any page that isn't the home page needs to navigate home before scrolling
+  // to a same-page anchor like #features — home-page sections don't exist here.
+  return window.location.pathname !== '/';
 }
 
 export default function Navbar({ isDark, toggleTheme }: NavbarProps) {

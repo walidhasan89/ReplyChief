@@ -35,6 +35,19 @@ const products = [
   },
 ];
 
+// LinkedIn Comments resource hub — the 9 SEO landing pages, in build-priority order
+const linkedInCommentsLinks = [
+  { label: 'LinkedIn Comment Generator', href: '/linkedin-comment-generator/' },
+  { label: 'LinkedIn Comment Examples', href: '/linkedin-comment-examples/' },
+  { label: 'Reply to Comments', href: '/reply-to-linkedin-comments/' },
+  { label: 'Congratulations Comments', href: '/linkedin-congratulations-comments/' },
+  { label: 'Comment Tones', href: '/linkedin-comment-tones/' },
+  { label: 'Commenting Strategy', href: '/linkedin-commenting-strategy/' },
+  { label: 'Best Comment Generators', href: '/best-linkedin-comment-generators/' },
+  { label: 'Engage AI Alternative', href: '/alternatives/engage-ai/' },
+  { label: 'Comments for Sales', href: '/linkedin-comments-for-sales/' },
+];
+
 // Internal SEO links — placed naturally in footer
 const internalLinks = [
   { label: 'LinkedIn Comment Automation Tool', href: 'https://replychief.com/linkedin-comment-automation-tool/' },
@@ -313,8 +326,27 @@ export default function Footer({ isDark }: Props) {
           </div>
         </div>
 
-        {/* Internal SEO links section */}
+        {/* LinkedIn Comments resource hub */}
         <div className={`mt-12 pt-8 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
+          <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+            LinkedIn Comments
+          </p>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {linkedInCommentsLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => navigateTo(e, link.href)}
+                className={`text-sm transition-colors duration-200 hover:underline underline-offset-2 ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'}`}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Internal SEO links section */}
+        <div className={`mt-8 pt-8 border-t ${isDark ? 'border-white/[0.06]' : 'border-slate-100'}`}>
           <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
             Explore ReplyChief
           </p>
